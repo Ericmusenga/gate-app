@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+
+    <!-- ✅ Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                
+                <!-- ✅ Success Message Alert (will be shown via JS) -->
+                <div id="successAlert" class="alert alert-success alert-dismissible fade show d-none" role="alert">
+                    ✅ Student registered successfully!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h3 class="text-center mb-4">Student Registration</h3>
+
+                        <!-- ✅ Registration Form -->
+                        <form action="register.php" method="POST" enctype="multipart/form-data">
+
+                            <div class="mb-3">
+                                <label for="studentId" class="form-label">Student ID</label>
+                                <input type="text" class="form-control" id="studentId" name="studentId" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="department" class="form-label">Department</label>
+                                <input type="text" class="form-control" id="department" name="department" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="program" class="form-label">Program</label>
+                                <input type="text" class="form-control" id="program" name="program" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="class" class="form-label">Class</label>
+                                <input type="text" class="form-control" id="class" name="class" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="photo" class="form-label">Photo</label>
+                                <input type="file" class="form-control" id="photo" name="photo" accept="image/*" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="serialNumber" class="form-label">Serial Number</label>
+                                <input type="text" class="form-control" id="serialNumber" name="serialNumber" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100">Register</button>
+                        </form>
+
+                        <p class="text-center mt-3">
+                            Already have an account? <a href="login.html">Login here</a>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ✅ Success Redirect Logic -->
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("success") === "1") {
+            const alertDiv = document.getElementById("successAlert");
+            alertDiv.classList.remove("d-none"); // Show the alert
+
+            // Remove "success=1" from URL after showing the alert
+            window.history.replaceState({}, document.title, "register.html");
+        }
+    </script>
+
+</body>
+</html>

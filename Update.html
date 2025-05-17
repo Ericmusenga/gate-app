@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management</title>
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Container Styling */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            margin-top: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input {
+            padding: 12px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .action-buttons button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .edit-btn {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .edit-btn:hover, .delete-btn:hover {
+            opacity: 0.8;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Title moved to the top -->
+        <h2>Student Registration & Management</h2>
+
+        <!-- Registration Form -->
+        <form id="studentForm">
+            <label for="studentId">Student ID:</label>
+            <input type="text" id="studentId" name="studentId" required>
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="department">Department:</label>
+            <input type="text" id="department" name="department" required>
+
+            <label for="program">Program:</label>
+            <input type="text" id="program" name="program" required>
+
+            <label for="class">Class:</label>
+            <input type="text" id="class" name="class" required>
+
+            <label for="photo">Photo :</label>
+            <input type="file" id="photo" name="photo" required>
+
+            <label for="serialNumber">Serial Number:</label>
+            <input type="text" id="serialNumber" name="serialNumber" required>
+
+            <button type="submit">Register Student</button>
+        </form>
+
+        <!-- Student Table -->
+        <table id="studentTable">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Program</th>
+                    <th>Class</th>
+                    <th>Serial Number</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dynamic rows will be added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Function to handle form submission
+        document.getElementById('studentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get form data
+            const studentId = document.getElementById('studentId').value;
+            const name = document.getElementById('name').value;
+            const department = document.getElementById('department').value;
+            const program = document.getElementById('program').value;
+            const className = document.getElementById('class').value;
+            const photo = document.getElementById('photo').value;
+            const serialNumber = document.getElementById('serialNumber').value;
+
+            // Create new student object
+            const studentData = {
+                studentId, name, department, program, className, photo, serialNumber
+            };
+
+            // Save student data to localStorage
+            let students = JSON.parse(localStorage.getItem('students')) || [];
+            students.push(studentData);
+            localStorage.setItem('students', JSON.stringify(students));
+
+            // Clear form fields
+            document.getElementById('studentForm').reset();
+
+            // Refresh table view
+            displayStudents();
+        });
+
+        // Function to display students in the table
+        function displayStudents() {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const studentTableBody = document.getElementById('studentTable').getElementsByTagName('tbody')[0];
+
+            // Clear table before adding updated rows
+            studentTableBody.innerHTML = '';
+
+            // Add students to the table
+            students.forEach((student, index) => {
+                const row = studentTableBody.insertRow();
+                row.insertCell(0).textContent = student.studentId;
+                row.insertCell(1).textContent = student.name;
+                row.insertCell(2).textContent = student.department;
+                row.insertCell(3).textContent = student.program;
+                row.insertCell(4).textContent = student.className;
+                row.insertCell(5).textContent = student.serialNumber;
+
+                const actionsCell = row.insertCell(6);
+                actionsCell.classList.add('action-buttons');
+
+                // Edit button
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.classList.add('edit-btn');
+                editButton.onclick = () => editStudent(index);
+                actionsCell.appendChild(editButton);
+
+                // Delete button
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.classList.add('delete-btn');
+                deleteButton.onclick = () => deleteStudent(index);
+                actionsCell.appendChild(deleteButton);
+            });
+        }
+
+        // Function to edit student
+        function editStudent(index) {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const student = students[index];
+
+            document.getElementById('studentId').value = student.studentId;
+            document.getElementById('name').value = student.name;
+            document.getElementById('department').value = student.department;
+            document.getElementById('program').value = student.program;
+            document.getElementById('class').value = student.className;
+            document.getElementById('photo').value = student.photo;
+            document.getElementById('serialNumber').value = student.serialNumber;
+
+            // Remove the student from storage before saving the updated version
+            students.splice(index, 1);
+            localStorage.setItem('students', JSON.stringify(students));
+
+            // Refresh table view
+            displayStudents();
+        }
+
+        // Function to delete student
+        function deleteStudent(index) {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            students.splice(index, 1); // Remove student by index
+            localStorage.setItem('students', JSON.stringify(students));
+
+            // Refresh table view
+            displayStudents();
+        }
+
+        // Initial call to display students
+        displayStudents();
+    </script>
+
+</body>
+</html>
