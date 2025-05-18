@@ -7,25 +7,23 @@ if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
     exit();
 }
 ?>
-
-
 <!DOCTYPE html>
 <html>
 <head>
   <title>Admin Dashboard</title>
-  <link href="style.css" rel="stylesheet">
+  <link href="../css/style.css" rel="stylesheet">
 </head>
 <body>
 
 <h1>Welcome To The Smart Gate Entry Management System</h1>
-<a href="logout.php" class="btn">Logout</a>
+<a href="../logout.php" class="btn">Logout</a>
 
 <div class="sidebar">
   <h5>UR CE Rukara</h5>
-  <a href="#" onclick="loadContent('user.php')">User Account</a>
-  <a href="#" onclick="loadContent('register.php')">Register Student</a>
-  <a href="#" onclick="loadContent('visitor.php')">Visitor</a>
-  <a href="#" onclick="loadContent('lend.php')">Lend Computer</a>
+  <a href="#" onclick="loadContent('userAccount.php')">User Account</a>
+  <a href="#" onclick="loadContent('register.html')">Register Student</a>
+  <a href="#" onclick="loadContent('../visitor.php')">Visitor</a>
+  <a href="#" onclick="loadContent('../lend.php')">Lend Computer</a>
   <a href="#" onclick="loadContent('update.php')">Update Info</a>
   <a href="#" onclick="loadContent('report.php')">View Report</a>
 </div>

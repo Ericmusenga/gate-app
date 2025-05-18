@@ -89,7 +89,9 @@
     program: "BTech in Embedded Systems",
     mode: "Full-Time",
     serial: "UR-ES-2025-001",
-    photoUrl: "https://via.placeholder.com/100x120.png?text=Student+Photo" // Replace with actual photo
+    photoUrl: "./upload/1747499528_we.jpeg"
+
+    //photoUrl: "https://via.placeholder.com/100x120.png?text=Student+Photo" // Replace with actual photo
   };
 
   // Fill the HTML with the student data

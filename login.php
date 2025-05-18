@@ -40,10 +40,10 @@ if ($result->num_rows === 1) {
     $_SESSION['user_type'] = $user['user_type'];
 
     if ($user['user_type'] === 'admin') {
-        header("Location: admin_dashboard.php");
+        header("Location: /gate/Project_capstone/admin/admin_dashboard.php");
         exit();
     } elseif ($user['user_type'] === 'standard') {
-        header("Location: standard_dashboard.php");
+        header("Location: /gate/Project_capstone/standard/standard_dashboard.php");
         exit();
     } else {
         echo "❌ Unknown role: " . htmlspecialchars($user['user_type']);

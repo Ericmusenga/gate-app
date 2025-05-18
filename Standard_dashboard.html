@@ -1,188 +1,74 @@
 <?php
 session_start();
-if (!isset($_SESSION['user']) || $_SESSION['user']['user_type'] !== 'Standard') {
-    header("Location: login.php");
+if (!isset($_SESSION['user_type'])) {
+    header("Location: login.html");
     exit();
 }
+
+$userType = $_SESSION['user_type'];
+$email = $_SESSION['email'];
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Gate Entry Dashboard - UR CE Rukara</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #d7e3f5;
-    }
-    .sidebar {
-      width: 260px;
-      background-color: #003366;
-      color: white;
-      height: 100vh;
-      position: fixed;
-      padding: 20px;
-      transition: all 0.3s ease;
-    }
-    .sidebar.collapsed {
-      margin-left: -260px;
-    }
-    .sidebar h5 {
-      font-weight: bold;
-    }
-    .sidebar a {
-      color: white;
-      display: block;
-      margin: 15px 0;
-      text-decoration: none;
-    }
-    .sidebar a:hover {
-      text-decoration: underline;
-    }
-    .main {
-      margin-left: 280px;
-      padding: 30px;
-      transition: margin-left 0.3s ease;
-    }
-    .main.collapsed {
-      margin-left: 20px;
-    }
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .header h3 {
-      margin: 0;
-    }
-    .card {
-      margin-top: 20px;
-    }
-    .toggle-btn {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background-color: #003366;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      cursor: pointer;
-    }
-    .logout-btn {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-    }
-  </style>
+  <title><?php echo ucfirst($userType); ?> Dashboard</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
-  <a href="login.php" class="btn btn-danger logout-btn">Logout</a>
+<h1>Welcome to Smart Gate System - <?php echo ucfirst($userType); ?></h1>
+<p>Logged in as: <?php echo htmlspecialchars($email); ?></p>
+<a href="logout.php" class="btn">Logout</a>
 
-  <div class="sidebar" id="sidebar">
-    <h5>UR CE Rukara Gate Security</h5>
-    <!-- <a href="#" onclick="loadContent('user')">User Account</a> -->
-    <a href="#" onclick="loadContent('report')">View Report</a>
-    <a href="#" onclick="loadContent('visitor')">Visitor</a>
-    <!-- <a href="#" onclick="loadContent('register')">Register Student</a> -->
-    <!-- <a href="#" onclick="loadContent('update')">Update Info</a> -->
-    <a href="#" onclick="loadContent('lend')">Lend Computer</a>
-    <!-- <a href="#" onclick="loadContent('login')">Login</a> -->
-  </div>
+<div class="sidebar">
+  <h5>UR CE Rukara</h5>
 
-  <div class="main" id="main">
-    <div class="header mb-4">
-      <h3>Smart Gate Entry Management System</h3>
-      <!-- <span><strong>Academic Year:</strong> 2024 - 2025</span> -->
-    </div>
+  <!-- Tabs for Admin -->
+  <?php if ($userType === 'admin'): ?>
+    <a href="#" onclick="loadContent('user.php')">User Account</a>
+    <a href="#" onclick="loadContent('register.php')">Register Student</a>
+  <?php endif; ?>
 
-    <div id="content">
-      <div class="card border-primary">
-        <div class="card-header bg-primary text-white">Dashboard</div>
-        <div class="card-body">
-          <p>Welcome to the dashboard for monitoring and managing student entry and exit at UR CE Rukara using RFID technology.</p>
-        </div>
+  <!-- Tabs for All users -->
+  <a href="#" onclick="loadContent('visitor.php')">Visitor</a>
+  <a href="#" onclick="loadContent('lend.php')">Lend Computer</a>
+  <a href="#" onclick="loadContent('update.php')">Update Info</a>
+  <a href="#" onclick="loadContent('report.php')">View Report</a>
+</div>
+
+<div class="main">
+  <div id="content">
+    <div class="card">
+      <div class="card-header bg-primary">Dashboard</div>
+      <div class="card-body">
+        <p>
+          <?php if ($userType === 'admin'): ?>
+            This is the admin dashboard with full control over student and user management.
+          <?php else: ?>
+            This is the standard dashboard with limited functionality.
+          <?php endif; ?>
+        </p>
       </div>
     </div>
   </div>
+</div>
 
-  <script>
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('collapsed');
-      document.getElementById('main').classList.toggle('collapsed');
-    }
-
-    function loadContent(tab) {
-      let content = '';
-
-      if (tab === 'user') {
-        content = `
-          <div class="card border-success">
-            <div class="card-header bg-success text-white">User Account</div>
-            <div class="card-body">
-              <p>Manage admin or student accounts, assign roles, and update credentials here.</p>
-            </div>
-          </div>`;
-      } else if (tab === 'report') {
-        content = `
-          <div class="card border-info">
-            <div class="card-header bg-info text-white">View Report</div>
-            <div class="card-body">
-              <p>Check gate entry logs, machine capture images, and verification statuses.</p>
-            </div>
-          </div>`;
-      } else if (tab === 'visitor') {
-        content = `
-          <div class="card border-warning">
-            <div class="card-header bg-warning text-dark">Visitor</div>
-            <div class="card-body">
-              <p>Register a new visitor, Register He/she Details.</p>
-              <button class="btn btn-dark">Register A vistor Here</button>
-            </div>
-          </div>`;
-      } else if (tab === 'register') {
-        content = `
-          <div class="card border-primary">
-            <div class="card-header bg-primary text-white">Student Registration</div>
-            <div class="card-body">
-            //   <p>Register a new student into the gate entry system with their info and photo.</p>
-              <button class="btn btn-success">Go to Registration Form</button>
-            </div>
-          </div>`;
-      } else if (tab === 'update') {
-        content = `
-          <div class="card border-secondary">
-            <div class="card-header bg-secondary text-white">Update Student Info</div>
-            <div class="card-body">
-              <p>Search and update student name, email, department, or photo.</p>
-              <button class="btn btn-outline-secondary">Update Student</button>
-            </div>
-          </div>`;
-      } else if (tab === 'lend') {
-        content = `
-          <div class="card border-dark">
-            <div class="card-header bg-dark text-white">Lend Computer</div>
-            <div class="card-body">
-              <p>Allow a student to temporarily lend their computer to another student.</p>
-              <button class="btn btn-dark">Open Lending Form</button>
-            </div>
-          </div>`;
-      } else if (tab === 'login') {
-        content = `
-          <div class="card border-info">
-            <div class="card-header bg-info text-white">Login</div>
-            <div class="card-body">
-              <p>This section is used by admins or system users to log in securely.</p>
-            </div>
-          </div>`;
-      }
-
-      document.getElementById('content').innerHTML = content;
-    }
-  </script>
+<script>
+  function loadContent(file) {
+    fetch(file)
+      .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.text();
+      })
+      .then(html => {
+        document.getElementById('content').innerHTML = html;
+      })
+      .catch(error => {
+        document.getElementById('content').innerHTML = `<div class="card"><div class="card-body">Error loading content: ${error}</div></div>`;
+      });
+  }
+</script>
 
 </body>
 </html>
