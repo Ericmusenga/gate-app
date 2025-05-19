@@ -1,5 +1,5 @@
 <?php
-include('db.php');
+include('../db.php');
 
 if (isset($_GET['id'])) {
     $student_id = $_GET['id'];
@@ -28,8 +28,15 @@ if (isset($_GET['id'])) {
     }
 }
 ?>
-
-<form method="POST">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>update</title>
+</head>
+<body>
+  <form method="POST">
     <label>Name:</label><input type="text" name="name" value="<?php echo $row['name']; ?>" required><br>
     <label>Department:</label><input type="text" name="department" value="<?php echo $row['department']; ?>" required><br>
     <label>Program:</label><input type="text" name="program" value="<?php echo $row['program']; ?>" required><br>
@@ -38,3 +45,6 @@ if (isset($_GET['id'])) {
     <label>Serial Number:</label><input type="text" name="serial_number" value="<?php echo $row['serial_number']; ?>" required><br>
     <button type="submit">Update Student</button>
 </form>
+
+</body>
+</html>

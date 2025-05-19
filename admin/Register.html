@@ -1,94 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Registration</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register Student</title>
 
-    <!-- ✅ Bootstrap CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+  <!-- ✅ Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+
 </head>
-<body class="bg-light">
+<body>
 
-    <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-6">
-                
-                <!-- ✅ Success Message Alert (will be shown via JS) -->
-                <div id="successAlert" class="alert alert-success alert-dismissible fade show d-none" role="alert">
-                    ✅ Student registered successfully!
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+  <!-- ✅ Success Alert -->
 
-                <div class="card shadow">
-                    <div class="card-body">
-                        <h3 class="text-center mb-4">Student Registration</h3>
+    <h1 class="fixed-header">Welcome To The Smart Gate Entry Management System</h1>
 
-                        <!-- ✅ Registration Form -->
-                        <form action="register.php" method="POST" enctype="multipart/form-data">
+  <div id="successAlert" class="alert alert-success text-center d-none" role="alert">
+    ✅ Student registered successfully!
+    <br>
+    <a href="admin_dashboard.php" class="btn btn-sm btn-primary mt-2">Go to Dashboard</a>
+  </div>
 
-                            <div class="mb-3">
-                                <label for="studentId" class="form-label">Student ID</label>
-                                <input type="text" class="form-control" id="studentId" name="studentId" required>
-                            </div>
 
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" required>
-                            </div>
+  <!-- ✅ Registration Form -->
+  <form class="registration-form" action="register.php" method="POST" enctype="multipart/form-data">
+    <h3 class="text-center mb-4">Register Student</h3>
+    <label for="reg_number">Registration Number</label>
+    <input type="text" class="form-control mb-3" name="reg_number" placeholder="Registration Number" required>
+    <label for="name">Full Name</label>
+    <input type="text" class="form-control mb-3" name="name" placeholder="Full Name" required>
+    <label for="department">Department</label>
+    <input type="text" class="form-control mb-3" name="department" placeholder="Department" required>
+    <label for="program">Program</label>
+    <input type="text" class="form-control mb-3" name="program" placeholder="Program" required>
+    <label for="class">Class</label>
+    <input type="text" class="form-control mb-3" name="class" placeholder="Class" required>
+    <label for="laptop_serial">Serial</label>
+    <input type="text" class="form-control mb-3" name="laptop_serial" placeholder="Laptop Serial Number (optional)">
+    <label for="studentcard_id">Student Id</label>
+    <input type="text" class="form-control mb-3" name="studentcard_id" placeholder="Student Card ID" required>
+    <label for="image">Image</label>
+    <input type="file" class="form-control mb-4" name="photo" accept="image/*" required>
+    <!-- <button type="submit" class="btn btn-success w-100">Register</button> -->
+    <button type="submit" class="btn btn-success form-submit-btn">Register</button>
 
-                            <div class="mb-3">
-                                <label for="department" class="form-label">Department</label>
-                                <input type="text" class="form-control" id="department" name="department" required>
-                            </div>
+  </form>
 
-                            <div class="mb-3">
-                                <label for="program" class="form-label">Program</label>
-                                <input type="text" class="form-control" id="program" name="program" required>
-                            </div>
+  <!-- ✅ Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-                            <div class="mb-3">
-                                <label for="class" class="form-label">Class</label>
-                                <input type="text" class="form-control" id="class" name="class" required>
-                            </div>
+  <!-- ✅ Success Logic -->
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("success") === "1") {
+      const alertDiv = document.getElementById("successAlert");
+      alertDiv.classList.remove("d-none");
 
-                            <div class="mb-3">
-                                <label for="photo" class="form-label">Photo</label>
-                                <input type="file" class="form-control" id="photo" name="photo" accept="image/*" required>
-                            </div>
+      // Optional: Auto-redirect after 5 seconds
+      setTimeout(() => {
+        window.location.href = "dashboard.php";
+      }, 5000);
 
-                            <div class="mb-3">
-                                <label for="serialNumber" class="form-label">Serial Number</label>
-                                <input type="text" class="form-control" id="serialNumber" name="serialNumber" required>
-                            </div>
-                            <button type="submit" class="btn btn-success w-100">Register</button>
-                        </form>
-
-                        <p class="text-center mt-3">
-                            Already have an account? <a href="login.html">Login here</a>
-                        </p>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ✅ Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- ✅ Success Redirect Logic -->
-    <script>
-        const params = new URLSearchParams(window.location.search);
-        if (params.get("success") === "1") {
-            const alertDiv = document.getElementById("successAlert");
-            alertDiv.classList.remove("d-none"); // Show the alert
-
-            // Remove "success=1" from URL after showing the alert
-            window.history.replaceState({}, document.title, "register.html");
-        }
-    </script>
+      // Clean the URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+      window.onload = function() {
+    window.scrollTo(0, 0);
+  };
+  </script>
 
 </body>
 </html>

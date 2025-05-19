@@ -1,121 +1,232 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background-color: rgb(128, 153, 165);
+  padding-top: 100px;
 
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background-color:rgb(128, 153, 165);
-    }
+}
 
-    h1 {
-      text-align: center;
-      background-color:rgb(58, 128, 203);
-      color: white;
-      padding: 20px;
-      margin: 0;
-    }
+h1 {
+  text-align: center;
+  background-color: rgb(58, 128, 203);
+  color: white;
+  padding: 20px;
+  margin: 0;
+  z-index: 10;
+  position: relative;
+}
 
-    .btn {
-      text-decoration: none;
-      padding: 10px 20px;
-      color: white;
-      background-color: red;
-      border-radius: 5px;
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
-    .sidebar {
-      position: fixed;
-      top: 80px;
-      left: 0;
-      width: 200px;
-      height: 100%;
-      background-color:rgb(158, 179, 200);
-      padding: 20px;
-      color: white;
-      transition: all 0.3s ease;
-    }
+.btn {
+  text-decoration: none;
+  padding: 10px 20px;
+  color: white;
+  background-color: red;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 640px;
+  right: 50px;
+  width: 10%;
+}
 
-    .sidebar h5 {
-      margin-bottom: 30px;
-      color:rgb(165, 228, 216);
-      font-weight: bold;
+.sidebar {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 200px;
+  height: 100%;
+  background-color: rgb(158, 179, 200);
+  padding: 20px;
+  color: white;
+  transition: all 0.3s ease;
+}
 
-    }
-    .sidebar a {
-      display: block;
-      color: white;
-      text-decoration: none;
-      padding: 10px 0;
-      margin-bottom: 10px;
-      border-bottom: 1px solidrgb(126, 155, 183);
-    }
+.sidebar h5 {
+  margin-bottom: 30px;
+  color: rgb(165, 228, 216);
+  font-weight: bold;
+}
 
-    .sidebar a:hover {
-      background-color:rgb(142, 191, 239);
-      padding-left: 10px;
-      transition: all 0.3s;
-    }
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 10px 0;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgb(126, 155, 183);
+}
 
-    .main {
-      margin-left: 220px;
-      padding: 40px;
-      transition: margin-left 0.3s ease;
-    }
-    .card {
-   
-      /* margin-top: 20px; */
-      background: white;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-left: 5px solidrgb(59, 137, 221);
-      box-shadow: 0 2px 5px rgba(99, 168, 177, 0.1);
-    }
+.sidebar a:hover {
+  background-color: rgb(142, 191, 239);
+  padding-left: 10px;
+  transition: all 0.3s;
+}
 
-    .card-header {
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    .sidebar.collapsed {
-      margin-left: -260px;
-    }
-    .card-header.bg-primary { background-color: #007bff; color: white; }
+.main {
+  margin-left: 220px;
+  padding: 40px;
+  transition: margin-left 0.3s ease;
+}
 
-    .main.collapsed {
-      margin-left: 20px;
-    }
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .header h3 {
-      margin: 0;
-    }
-   
-    .toggle-btn {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background-color:rgb(75, 146, 217);
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      cursor: pointer;
-    }
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-left: 5px solid rgb(59, 137, 221);
+  box-shadow: 0 2px 5px rgba(99, 168, 177, 0.1);
+}
 
-    .logout-btn {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-    }
-    .btn2 {
-      text-decoration: none;
-      padding: 10px 20px;
-      color: white;
-      background-color: red;
-      border-radius: 5px;
-      position: absolute;
-      top: 200px;
-      right: 50px;
-    }
+.card-header {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-header.bg-primary {
+  background-color: white;
+  color: black;
+}
+
+.sidebar.collapsed {
+  margin-left: -260px;
+}
+
+.main.collapsed {
+  margin-left: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h3 {
+  margin: 0;
+}
+
+.toggle-btn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background-color: rgb(75, 146, 217);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.logout-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.btn2 {
+  text-decoration: none;
+  padding: 10px 20px;
+  color: white;
+  background-color: red;
+  border-radius: 5px;
+  position: absolute;
+  top: 200px;
+  right: 100px;
+}
+
+.formregister .btn {
+  text-align: center;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background-color: rgb(125, 228, 241);
+}
+
+/* Header title (if needed) */
+h1 {
+  text-align: center;
+  background-color: rgb(58, 128, 203);
+  color: white;
+  padding: 20px;
+  margin: 0;
+}
+
+/* Registration Form Styling */
+.registration-form {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  margin: 40px auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+/* margin-top: 3px; */
+  top: 15px;
+}
+
+/* Form inputs */
+.registration-form input[type="text"],
+.registration-form input[type="file"] {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+/* Submit button */
+.registration-form button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: rgb(58, 128, 203);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.registration-form button:hover {
+  background-color: rgb(42, 100, 170);
+}
+
+/* Success alert spacing */
+#successAlert {
+  margin-top: 20px;
+}
+
+/* Responsive improvements */
+@media (max-width: 576px) {
+  .registration-form {
+    padding: 20px;
+  }
+}
+/* Fixed header */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgb(58, 128, 203);
+  color: white;
+  text-align: center;
+  padding: 20px;
+  z-index: 999;
+  font-size: 22px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Push content below the header */
+.registration-form {
+  margin-top: 0px; 
+}
+.form-submit-btn {
+  position: static !important;
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  background-color: rgb(58, 128, 203);
+  color: white;
+  font-weight: bold;
+}

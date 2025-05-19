@@ -6,50 +6,62 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit();
 }
 
-if (!isset($_POST['email']) || !isset($_POST['password'])) {
-    echo "❌ Email or password not set.";
+if (empty($_POST['username']) || empty($_POST['password'])) {
+    echo "❌ Username or password not provided.";
     exit();
 }
 
-// Connection settings
+// Database config
 $host = "localhost";
 $user = "root";
 $pass = "";
 $db = "gate";
 
-// Create connection
+// DB connection
 $conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Clean inputs
-$email = trim($_POST['email']);
+// Inputs
+$username = trim($_POST['username']);
 $password = trim($_POST['password']);
 
-// Check user
-$sql = "SELECT * FROM users1 WHERE email=? AND password=?";
+// Query user by username
+$sql = "SELECT * FROM users WHERE username = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ss", $email, $password);
+$stmt->bind_param("s", $username);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows === 1) {
     $user = $result->fetch_assoc();
-    $_SESSION['email'] = $user['email'];
-    $_SESSION['user_type'] = $user['user_type'];
 
-    if ($user['user_type'] === 'admin') {
-        header("Location: /gate/Project_capstone/admin/admin_dashboard.php");
-        exit();
-    } elseif ($user['user_type'] === 'standard') {
-        header("Location: /gate/Project_capstone/standard/standard_dashboard.php");
+    // Compare password (plain or hashed)
+    if (password_verify($password, $user['password']) || $password === $user['password']) {
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['user_type'] = $user['role'];
+
+        // Redirect by role
+        switch ($user['role']) {
+            case 'admin':
+                header("Location: admin/admin_dashboard.php");
+                break;
+            case 'standard':
+                header("Location: standard/standard_dashboard.php");
+                break;
+            case 'student':
+                header("Location: student/student_dashboard.php");
+                break;
+            default:
+                echo "❌ Unknown role.";
+        }
         exit();
     } else {
-        echo "❌ Unknown role: " . htmlspecialchars($user['user_type']);
+        echo "❌ Incorrect password.";
     }
 } else {
-    echo "❌ Invalid email or password.";
+    echo "❌ Invalid username.";
 }
 
 $conn->close();

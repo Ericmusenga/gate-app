@@ -1,12 +1,12 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
-    header("Location: login.html");
-    exit();
-}
-?>
+// if (session_status() === PHP_SESSION_NONE) {
+//     session_start();
+// }
+// if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
+//     header("Location: login.html");
+//     exit();
+// }
+?> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,10 +14,10 @@ if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
   <link href="../css/style.css" rel="stylesheet">
 </head>
 <body>
-
-<h1>Welcome To The Smart Gate Entry Management System</h1>
-<a href="../logout.php" class="btn">Logout</a>
-
+  <div class="head">
+  <h1 class="fixed-header">Welcome To The Smart Gate Entry Management System</h1>
+  <a href="../logout.php" class="btn">Logout</a>
+  </div>
 <div class="sidebar">
   <h5>UR CE Rukara</h5>
   <a href="#" onclick="loadContent('userAccount.php')">User Account</a>
@@ -53,6 +53,9 @@ if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
         document.getElementById('content').innerHTML = `<div class="card"><div class="card-body">Error loading content: ${error}</div></div>`;
       });
   }
+    window.onload = function() {
+    window.scrollTo(0, 0);
+  };
 </script>
 
 </body>
