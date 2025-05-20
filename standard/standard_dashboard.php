@@ -92,18 +92,18 @@
 </html> -->
 
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'standard') {
-    header("Location: login.html");
-    exit();
-}
+// if (session_status() === PHP_SESSION_NONE) {
+//     session_start();
+// }
+// if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'standard') {
+//     header("Location: ../index.html");
+//     exit();
+// }
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin standard Dashboard</title>
+  <title>standard Dashboard</title>
   <link href="../css/style.css" rel="stylesheet">
 </head>
 <body>
@@ -124,7 +124,7 @@ if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'standard') {
     <div class="card">
       <div class="card-header bg-primary">Dashboard</div>
       <div class="card-body">
-        <p>Welcome to the dashboard managing student entry and exit at UR CE Rukara using RFID technology.</p>
+        <p>Welcome to the dashboard managing Visitors entry at UR CE Rukara using RFID technology.</p>
       </div>
     </div>
   </div>

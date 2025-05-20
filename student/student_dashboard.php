@@ -1,17 +1,27 @@
 <?php
+include '../db.php';
 // session_start();
-// if (!isset($_SESSION['student_id'])) {
-//     header("Location: login.php");
+
+// Use session to protect the dashboard and fetch student info
+// if (!isset($_SESSION['Registration_Number'])) {
+//     header("Location: ../index.html");
 //     exit();
 // }
 
-require_once '../db.php';
+$regNo = $_GET['reg'] ?? '';
 
-// $studentId = $_SESSION['student_id'];
-// $query = "SELECT * FROM students WHERE reg_number = '$studentId'";
-// $result = mysqli_query($conn, $query);
-// $student = mysqli_fetch_assoc($result);
-// 
+$student = null;
+
+if ($regNo) {
+    $stmt = $conn->prepare("SELECT * FROM students WHERE Registration_Number = ?");
+    $stmt->bind_param("s", $regNo);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $student = $result->fetch_assoc();
+    $stmt->close();
+    $conn->close();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -52,31 +62,42 @@ require_once '../db.php';
           <li class="nav-item">
             <a class="nav-link" data-bs-toggle="pill" href="#returnLaptop">Return Laptop</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="pill" href="#securityRegister">Security Register</a>
+          </li>
+          <li class="nav-item mt-4">
+            <a class="btn btn-danger w-100" href="../logout.php">Logout</a>
+          </li>
         </ul>
       </div>
 
       <!-- Main Content -->
       <div class="col-md-9 p-4">
         <div class="tab-content" id="tabContent">
-          
+
           <!-- Profile -->
           <div class="tab-pane fade show active" id="profile">
             <div class="header">UR CE - RUKARA<br>STUDENT INFO</div>
             <div class="info">
-            <div class="details" id="student-details">
-                <p><strong>Names:</strong> <span id="names">___________________________</span></p>
-                <p><strong>Reg No:</strong> <span id="regno">___________________________</span></p>
-                <p><strong>Year of Study:</strong> <span id="year">_____________________</span></p>
-                <p><strong>Department:</strong> <span id="dept">______________________</span></p>
-                <p><strong>Program:</strong> <span id="program">_______________________</span></p>
-                <p><strong>Study Mode:</strong> <span id="mode">______________________</span></p>
-                <p><strong>Serial Number:</strong> <span id="serial">____________________</span></p>
+              <div class="details" id="student-details">
+                <p><strong>Names:</strong> <span id="names"><?php echo htmlspecialchars($student['Name'] ?? ''); ?></span></p>
+                <p><strong>Reg No:</strong> <span id="regno"><?php echo htmlspecialchars($student['Registration_Number'] ?? ''); ?></span></p>
+                <p><strong>Year of Study:</strong> <span id="year"><?php echo htmlspecialchars($student['Class'] ?? ''); ?></span></p>
+                <p><strong>Department:</strong> <span id="dept"><?php echo htmlspecialchars($student['Department'] ?? ''); ?></span></p>
+                <p><strong>Program:</strong> <span id="program"><?php echo htmlspecialchars($student['Program'] ?? ''); ?></span></p>
+                <p><strong>Study Mode:</strong> <span id="mode"><?php echo htmlspecialchars($student['Study_Mode'] ?? ''); ?></span></p>
+                <p><strong>Serial Number:</strong> <span id="serial"><?php echo htmlspecialchars($student['Laptop_SerialNumber'] ?? ''); ?></span></p>
+              </div>
+              <div class="photo" id="photo-box">
+                <?php
+                  if (!empty($student['photo'])) {
+                    echo '<img src="../upload/' . htmlspecialchars($student['photo']) . '" alt="Student Photo" width="100" height="120">';
+                  } else {
+                    echo 'No Photo';
+                  }
+                ?>
+              </div>
             </div>
-            <div class="photo" id="photo-box">
-                <!-- Optional photo will appear here -->
-                Photo
-            </div>
-  </div>
           </div>
 
           <!-- Change Password -->
@@ -105,18 +126,18 @@ require_once '../db.php';
           <div class="tab-pane fade" id="lendLaptop">
             <div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
               <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
-                <h4 class="mb-4 text-center">Lend Laptop</h4>
+                <h4 class="mb-4 text-center">Lend a Laptop</h4>
                 <form action="lend_laptop.php" method="POST">
                   <div class="mb-3">
-                    <label for="regNumber" class="form-label">Registration Number</label>
-                    <input type="text" name="regNumber" class="form-control" value="<?php echo htmlspecialchars($student['reg_number']); ?>" readonly>
+                    <label for="text" class="form-label">Registration Number</label>
+                    <input type="text" name="Registration_Number" class="form-control" required>
                   </div>
                   <div class="mb-3">
-                    <label for="serialNumber" class="form-label">Laptop Serial Number</label>
-                    <input type="text" name="serialNumber" class="form-control" required>
+                    <label for="text" class="form-label">Laptop SerialNumber</label>
+                    <input type="text" name="Laptop_SerialNumber" class="form-control" required>
                   </div>
                   <div class="text-center">
-                    <button type="submit" class="btn btn-success">Request Lending</button>
+                    <button type="submit" class="btn btn-primary">Lend Laptop</button>
                   </div>
                 </form>
               </div>
@@ -130,8 +151,8 @@ require_once '../db.php';
                 <h4 class="text-center mb-3">Return Laptop</h4>
                 <form action="return_laptop.php" method="POST">
                   <div class="mb-3">
-                    <label for="regNumberReturn" class="form-label">Registration Number</label>
-                    <input type="text" name="regNumberReturn" class="form-control" value="<?php echo htmlspecialchars($student['reg_number']); ?>" readonly>
+                    <label for="Registration_Number" class="form-label">Registration Number</label>
+                    <input type="text" name="Registration_Number" class="form-control" value="<?php echo htmlspecialchars($student['Registration_Number']); ?>" readonly>
                   </div>
                   <div class="mb-3">
                     <label for="serialNumberReturn" class="form-label">Laptop Serial Number</label>
@@ -145,6 +166,28 @@ require_once '../db.php';
             </div>
           </div>
 
+          <!-- Security Register -->
+          <div class="tab-pane fade" id="securityRegister">
+            <div class="card border-dark">
+              <div class="card-header bg-dark text-white">Security Register</div>
+              <div class="card-body">
+                <form action="lend_process.php" method="post">
+                  <div class="mb-3">
+                    <label for="lender_id" class="form-label">Lender ID</label>
+                    <input type="text" name="lender_id" class="form-control" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="borrower_id" class="form-label">Borrower ID</label>
+                    <input type="text" name="borrower_id" class="form-control" required>
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-success">Lend</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -152,36 +195,5 @@ require_once '../db.php';
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-  <script>
-  // Sample student data
-  const studentInfo = {
-    names: "Eric Uwizeyimana",
-    regNo: "2222223456",
-    year: "3",
-    department: "Computer and Software Engineering",
-    program: "BTech in Embedded Systems",
-    mode: "Full-Time",
-    serial: "UR-ES-2025-001",
-    photoUrl: "./upload/1747499528_we.jpeg"
-
-    //photoUrl: "https://via.placeholder.com/100x120.png?text=Student+Photo" // Replace with actual photo
-  };
-
-  // Fill the HTML with the student data
-  document.getElementById("names").textContent = studentInfo.names;
-  document.getElementById("regno").textContent = studentInfo.regNo;
-  document.getElementById("year").textContent = studentInfo.year;
-  document.getElementById("dept").textContent = studentInfo.department;
-  document.getElementById("program").textContent = studentInfo.program;
-  document.getElementById("mode").textContent = studentInfo.mode;
-  document.getElementById("serial").textContent = studentInfo.serial;
-
-  // Load photo if available
-  if (studentInfo.file) {
-    const photoBox = document.getElementById("photo-box");
-    photoBox.innerHTML = `<img src="${studentInfo.file}" alt="Student Photo">`;
-  }
-</script>
 </body>
 </html>

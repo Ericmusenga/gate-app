@@ -19,11 +19,11 @@
   <a href="../logout.php" class="btn">Logout</a>
   </div>
 <div class="sidebar">
-  <h5>UR CE Rukara</h5>
-  <a href="#" onclick="loadContent('userAccount.php')">User Account</a>
+  <h4>UR CE Rukara</h4>
+  <!-- <a href="#" onclick="loadContent('userAccount.php')">User Account</a> -->
   <a href="#" onclick="loadContent('register.html')">Register Student</a>
   <a href="#" onclick="loadContent('../visitor.php')">Visitor</a>
-  <a href="#" onclick="loadContent('../lend.php')">Lend Computer</a>
+  <a href="#" onclick="loadContent('../lend.php')">Security Register</a>
   <a href="#" onclick="loadContent('update.php')">Update Info</a>
   <a href="#" onclick="loadContent('report.php')">View Report</a>
 </div>

@@ -2,113 +2,72 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>UR CE RUKARA - Student Info</title>
+  <title>Student Profile</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #eaeaea;
-    }
-    .card {
-      width: 500px;
-      border: 2px solid #000;
-      padding: 20px;
-      margin: 50px auto;
-      background-color: #f9f9f9;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      border-radius: 10px;
+    body { font-family: Arial, sans-serif; background-color: #f4f6f8; padding: 40px; }
+    .profile-card {
+      width: 700px;
+      margin: auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
     .header {
       text-align: center;
+      font-size: 24px;
       font-weight: bold;
-      font-size: 22px;
-      margin-bottom: 20px;
-      color: #2c3e50;
+      color: #1a73e8;
+      margin-bottom: 30px;
     }
     .info {
       display: flex;
       justify-content: space-between;
     }
-    .details {
-      width: 65%;
-    }
-    .details p {
-      margin: 8px 0;
-      font-size: 14px;
-      line-height: 1.4;
-    }
-    .details strong {
-      color: #333;
-    }
+    .details { width: 65%; }
+    .details p { margin: 10px 0; font-size: 16px; }
+    .details strong { color: #333; }
     .photo {
-      width: 30%;
-      height: 120px;
-      border: 1px solid #000;
-      background-color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 14px;
-      text-align: center;
+      width: 150px; height: 180px;
+      background: #e0e0e0;
+      border-radius: 5px;
+      overflow: hidden;
     }
     .photo img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 2px;
     }
   </style>
 </head>
 <body>
 
-<div class="card">
-  <div class="header">UR CE - RUKARA<br>STUDENT INFO</div>
+<div class="profile-card">
+  <div class="header">Student Profile</div>
+  <?php if ($student): ?>
   <div class="info">
-    <div class="details" id="student-details">
-      <p><strong>Names:</strong> <span id="names">___________________________</span></p>
-      <p><strong>Reg No:</strong> <span id="regno">___________________________</span></p>
-      <p><strong>Year of Study:</strong> <span id="year">_____________________</span></p>
-      <p><strong>Department:</strong> <span id="dept">______________________</span></p>
-      <p><strong>Program:</strong> <span id="program">_______________________</span></p>
-      <p><strong>Study Mode:</strong> <span id="mode">______________________</span></p>
-      <p><strong>Serial Number:</strong> <span id="serial">____________________</span></p>
+    <div class="details">
+      <p><strong>Registration Number:</strong> <?= $student['Registration_Number'] ?></p>
+      <p><strong>Names:</strong> <?= htmlspecialchars($student['Name']) ?></p>
+      <p><strong>Department:</strong> <?= $student['Department'] ?></p>
+      <p><strong>Program:</strong> <?= $student['Program'] ?></p>
+      <p><strong>Class:</strong> <?= $student['Class'] ?></p>
+      <p><strong>Laptop Serial Number:</strong> <?= $student['Laptop_SerialNumber'] ?></p>
+      <p><strong>Laptop Status:</strong> <?= $student['laptop_status'] ?></p>
+      <p><strong>Student Card ID:</strong> <?= $student['studentcard_Id'] ?></p>
     </div>
-    <div class="photo" id="photo-box">
-      <!-- Optional photo will appear here -->
-      Photo
+    <div class="photo">
+      <?php if (!empty($student['photo'])): ?>
+        <img src="../uploads/<?= $student['photo'] ?>" alt="Student Photo">
+      <?php else: ?>
+        <div style="padding:10px; text-align:center;">No Photo</div>
+      <?php endif; ?>
     </div>
   </div>
+  <?php else: ?>
+    <p style="text-align:center; color:red;">Student not found. Please scan your card or log in.</p>
+  <?php endif; ?>
 </div>
-
-<script>
-  // Sample student data
-  const studentInfo = {
-    names: "Eric Uwizeyimana",
-    regNo: "2222223456",
-    year: "3",
-    department: "Computer and Software Engineering",
-    program: "BTech in Embedded Systems",
-    mode: "Full-Time",
-    serial: "UR-ES-2025-001",
-    photoUrl: "./upload/1747499528_we.jpeg"
-
-    //photoUrl: "https://via.placeholder.com/100x120.png?text=Student+Photo" // Replace with actual photo
-  };
-
-  // Fill the HTML with the student data
-  document.getElementById("names").textContent = studentInfo.names;
-  document.getElementById("regno").textContent = studentInfo.regNo;
-  document.getElementById("year").textContent = studentInfo.year;
-  document.getElementById("dept").textContent = studentInfo.department;
-  document.getElementById("program").textContent = studentInfo.program;
-  document.getElementById("mode").textContent = studentInfo.mode;
-  document.getElementById("serial").textContent = studentInfo.serial;
-
-  // Load photo if available
-  if (studentInfo.file) {
-    const photoBox = document.getElementById("photo-box");
-    photoBox.innerHTML = `<img src="${studentInfo.file}" alt="Student Photo">`;
-  }
-</script>
 
 </body>
 </html>

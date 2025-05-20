@@ -1,8 +1,8 @@
 <?php
 session_start();
-include '../db_connection.php'; // Include your DB connection
+include '../db.php'; // Include your DB connection
 
-$regNumber = $_SESSION['reg_number']; // Assuming user session holds reg_number
+$regNumber = $_SESSION['Registration_Number']; // Assuming user session holds reg_number
 $currentPassword = $_POST['currentPassword'];
 $newPassword = $_POST['newPassword'];
 

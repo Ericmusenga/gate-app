@@ -1,9 +1,10 @@
 <!-- Visitor Registration Card -->
  <!DOCTYPE html>
 <html lang="en">
- <header
- <div class="header">
-  <!-- <a href="../logout.php" class="logout-btn">Logout</a> -->
+ <header>
+  <h1 class="fixed-header">Welcome To The Smart Gate Entry Management System</h1>
+  <a href="../logout.php" class="btn">Logout</a>
+  </div>
 </div>
 </header>
 <div class="card border-warning visitor-card">
