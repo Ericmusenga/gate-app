@@ -96,51 +96,33 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
       $result = $conn->query($sql);
       if ($result && $result->num_rows > 0) {
           while ($row = $result->fetch_assoc()) {
-              echo "<tr>
-                      <td>{$row['id']}</td>
-                      <td>{$row['Registration_Number']}</td>
-                      <td>{$row['Name']}</td>
-                      <td>{$row['Department']}</td>
-                      <td>{$row['Program']}</td>
-                      <td>{$row['Class']}</td>
-                      <td>{$row['Laptop_SerialNumber']}</td>
-                      <td>{$row['laptop_status']}</td>
-                      <td>{$row['studentcard_Id']}</td>
-                      <td>{$row['photo']}</td>
-                      <td>{$row['created_at']}</td>
-                      <td>
-                        <button class='btn3' onclick=\"deleteVisitor({$row['id']})\">Delete</button>
-                        <a href='edit_visitor.php?id={$row['id']}' class='btn3'>Edit</a>
-                      </td>
+              $photoHtml = $row['photo'] ? "<img src='uploads/{$row['photo']}' alt='Captured Image' width='60'>" : "N/A";
 
-                    </tr>";
+                echo "<tr>
+                <td>{$row['id']}</td>
+                <td>{$row['Registration_Number']}</td>
+                <td>{$row['Name']}</td>
+                <td>{$row['Department']}</td>
+                <td>{$row['Program']}</td>
+                <td>{$row['Class']}</td>
+                <td>{$row['Laptop_SerialNumber']}</td>
+                <td>{$row['laptop_status']}</td>
+                <td>{$row['studentcard_Id']}</td>
+                <td>$photoHtml</td>
+                <td>{$row['created_at']}</td>
+                <td>
+                    <button class='btn3' onclick=\"deleteVisitor({$row['id']})\">Delete</button>
+                    <a href='edit_visitor.php?id={$row['id']}' class='btn3'>Edit</a>
+                </td>
+                </tr>";
+
           }
-      } else {
-          echo "<tr><td colspan='7'>No visitor records found.</td></tr>";
-      }
+        } else {
+            echo "<tr><td colspan='7'>No visitor records found.</td></tr>";
+        }
       $conn->close();
       ?>
     </table>
-<table>
-  <tr>
-
-  <?php while($row = $result->fetch_assoc()): ?>
-    <tr>
-      <td><?= $row['id'] ?></td>
-      <td><?= htmlspecialchars($row['Registration_Number']) ?></td>
-      <td><?= htmlspecialchars($row['Name']) ?></td>
-      <td><?= htmlspecialchars($row['Department']) ?></td>
-      <td><?= htmlspecialchars($row['Program']) ?></td>
-      <td><?= htmlspecialchars($row['Class']) ?></td>
-      <td><?= htmlspecialchars($row['Laptop_SerialNumber']) ?></td>
-      <td><?= htmlspecialchars($row['laptop_status']) ?></td>
-      <td><?= htmlspecialchars($row['studentcard_Id']) ?></td>
-      <td><?= htmlspecialchars($row['created_at']) ?></td>
-
-    
-    </tr>
-  <?php endwhile; ?>
-</table>
 
     <script>
     function deleteVisitor(id) {
