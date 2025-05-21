@@ -34,28 +34,41 @@ $result = $conn->query("SELECT * FROM students ORDER BY Registration_Number ASC"
     <th>ID</th>
     <th>Reg No</th>
     <th>Name</th>
-    <th>Action</th>
+    <th>Department<th>
+    <th>Program<th>
+    <th>Class<th>
+    <th>Laptop_SerialNumber<th>
+    <th>laptop_status<th>
+    <th>studentcard_Id<th>
+    <th>studentcard_Id<th>
     <th>Timestamp</th>
     <th>Photo</th>
+    <!-- <th>Action</th> -->
   </tr>
   <?php while($row = $result->fetch_assoc()): ?>
     <tr>
       <td><?= $row['id'] ?></td>
       <td><?= htmlspecialchars($row['Registration_Number']) ?></td>
       <td><?= htmlspecialchars($row['Name']) ?></td>
-    
+      <td><?= htmlspecialchars($row['Department']) ?></td>
+      <td><?= htmlspecialchars($row['Program']) ?></td>
+      <td><?= htmlspecialchars($row['Class']) ?></td>
+      <td><?= htmlspecialchars($row['Laptop_SerialNumber']) ?></td>
+      <td><?= htmlspecialchars($row['laptop_status']) ?></td>
+      <td><?= htmlspecialchars($row['studentcard_Id']) ?></td>
+      <td><?= htmlspecialchars($row['created_at']) ?></td>
       <td>
         <?php if ($row['photo']): ?>
-          <img src="../uploads/<?= $row['photo'] ?>" alt="Captured Image">
+          <img src="uploads/<?= $row['photo'] ?>" alt="Captured Image">
         <?php else: ?>
           N/A
         <?php endif; ?>
       </td>
+    
     </tr>
   <?php endwhile; ?>
 </table>
 
 <a href="report.php" class="btn btn-info">View Full Report</a>
-
 </body>
 </html>
