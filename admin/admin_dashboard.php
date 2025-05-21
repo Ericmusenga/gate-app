@@ -64,12 +64,12 @@
 </script>
 <script>
 function deleteVisitor(id) {
-    if (confirm("Are you sure you want to delete this visitor?")) {
-        fetch('delete_visitor.php?id=' + id)
+    if (confirm("Are you sure you want to delete this student?")) {
+        fetch('delete_student.php?id=' + id)
         .then(response => response.text())
         .then(data => {
             if (data.trim() === 'success') {
-                alert('Visitor deleted successfully.');
+                alert('student deleted successfully.');
                 location.reload();
             } else {
                 alert('Server error: ' + data);
