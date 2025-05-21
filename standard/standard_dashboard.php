@@ -19,7 +19,7 @@
 
 <div class="sidebar" id="sidebar">
   <h5>UR CE Rukara Gate Security</h5>
-  <a href="#" onclick="loadContent('vistor_report.php')">View Vistor Report</a>
+  <a href="#" onclick="loadContent('export_vistor_report.php')">View Vistor Report</a>
   <a href="#" onclick="loadContent('visitor.php')">Visitor</a>
   <!-- <a href="#" onclick="loadContent('../lend.php')">Lend Computer</a> -->
 </div>

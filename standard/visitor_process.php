@@ -14,14 +14,17 @@ try {
 
 // Check if form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $visitor_name = $_POST['visitor_name'] ?? '';
-    $id_number = $_POST['id_number'] ?? '';
-    $visit_reason = $_POST['visit_reason'] ?? '';
+    $firstname = $_POST['firstname'] ?? '';
+    $lastname = $_POST['lastname'] ?? '';
+    $visitor_name = $firstname . ' ' . $lastname;
+
+    $id_number = $_POST['visitor_id'] ?? '';
+    $visit_reason = $_POST['purpose'] ?? '';
     $district = $_POST['district'] ?? '';
     $sector = $_POST['sector'] ?? '';
     $equipment = $_POST['equipment'] ?? '';
 
-    // Prepare SQL statement
+    // Prepare SQL statement with ALL placeholders
     $sql = "INSERT INTO visitors (visitor_name, id_number, visit_reason, district, sector, equipment, visit_time)
             VALUES (:visitor_name, :id_number, :visit_reason, :district, :sector, :equipment, NOW())";
 
@@ -32,11 +35,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':visitor_name' => $visitor_name,
             ':id_number'    => $id_number,
             ':visit_reason' => $visit_reason,
-            ':district'    => $district,
-            'sector' => $sector,
-            'equipment' => $equipment,
+            ':district'     => $district,
+            ':sector'       => $sector,
+            ':equipment'    => $equipment,
         ]);
-        echo "Visitor registered successfully!";
+        // echo "Visitor registered successfully!";
+        
+       header("Location: standard_dashboard.php?success=1");
+        exit();
     } catch (PDOException $e) {
         echo "Error saving visitor: " . $e->getMessage();
     }

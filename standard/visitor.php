@@ -60,7 +60,7 @@
 
       <div class="form-group">
         <label for="visitor_id">Visitor ID</label>
-        <input type="text" name="visitor_id" id="visitor_id" class="form-control" required>
+        <input type="text" name="visitor_id" id="visitor_id" class="form-control" maxlength="16" required>
       </div>
 
       <div class="form-group">
@@ -76,7 +76,7 @@
 
       <div class="form-group">
         <label for="equipment">Equipment (if any)</label>
-        <input type="text" name="equipment" id="equipment" class="form-control">
+        <input type="text" name="equipment" id="equipment" class="form-control" placeholder="Eg: phone, electronic device">
       </div>
 
       <div class="text-center mt-3">
