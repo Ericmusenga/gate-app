@@ -19,8 +19,8 @@
 
 <div class="sidebar" id="sidebar">
   <h5>UR CE Rukara Gate Security</h5>
-  <a href="#" onclick="loadContent('visitor_report.php')">View Vistor Report</a>
-  <a href="#" onclick="loadContent('../visitor.php')">Visitor</a>
+  <a href="#" onclick="loadContent('vistor_report.php')">View Vistor Report</a>
+  <a href="#" onclick="loadContent('visitor.php')">Visitor</a>
   <!-- <a href="#" onclick="loadContent('../lend.php')">Lend Computer</a> -->
 </div>
 
@@ -49,7 +49,22 @@
         document.getElementById('content').innerHTML = `<div class="card"><div class="card-body">Error loading content: ${error}</div></div>`;
       });
   }
+  function loadContent(file) {
+  fetch(file)
+    .then(response => {
+      if (!response.ok) throw new Error('Network response was not ok');
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById('content').innerHTML = html;
+    })
+    .catch(error => {
+      document.getElementById('content').innerHTML = `<div class="card"><div class="card-body">Error loading content: ${error}</div></div>`;
+    });
+}
+
 </script>
+
 
 </body>
 </html>

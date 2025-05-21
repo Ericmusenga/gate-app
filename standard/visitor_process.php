@@ -2,8 +2,8 @@
 // Database configuration
 $host = "localhost";
 $dbname = "gate";
-$username = "root"; // Change if different
-$password = "";     // Change if different
+$username = "root"; 
+$password = "";     
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
@@ -17,11 +17,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $visitor_name = $_POST['visitor_name'] ?? '';
     $id_number = $_POST['id_number'] ?? '';
     $visit_reason = $_POST['visit_reason'] ?? '';
-    $photo_url = $_POST['photo_url'] ?? '';
+    $district = $_POST['district'] ?? '';
+    $sector = $_POST['sector'] ?? '';
+    $equipment = $_POST['equipment'] ?? '';
 
     // Prepare SQL statement
-    $sql = "INSERT INTO visitors (visitor_name, id_number, visit_reason, photo_url, visit_time)
-            VALUES (:visitor_name, :id_number, :visit_reason, :photo_url, NOW())";
+    $sql = "INSERT INTO visitors (visitor_name, id_number, visit_reason, district, sector, equipment, visit_time)
+            VALUES (:visitor_name, :id_number, :visit_reason, :district, :sector, :equipment, NOW())";
 
     $stmt = $pdo->prepare($sql);
 
@@ -30,7 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':visitor_name' => $visitor_name,
             ':id_number'    => $id_number,
             ':visit_reason' => $visit_reason,
-            ':photo_url'    => $photo_url,
+            ':district'    => $district,
+            'sector' => $sector,
+            'equipment' => $equipment,
         ]);
         echo "Visitor registered successfully!";
     } catch (PDOException $e) {

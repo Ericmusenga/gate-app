@@ -26,7 +26,8 @@
   <h4>UR CE Rukara</h4>
   <!-- <a href="#" onclick="loadContent('userAccount.php')">User Account</a> -->
   <a href="#" onclick="loadContent('register.html')">Register Student</a>
-  <a href="#" onclick="loadContent('../visitor.php')">Visitor</a>
+  <a href="#" onclick="loadContent('SecurityRegister.html')">Security Register</a>
+  <a href="#" onclick="loadContent('visitor_report.php')">Visitor Report</a>
   <a href="#" onclick="loadContent('../lend.php')">Security Register</a>
   <a href="#" onclick="loadContent('update.php')">Update Info</a>
   <a href="#" onclick="loadContent('report.php')">View Report</a>
