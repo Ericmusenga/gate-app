@@ -18,6 +18,10 @@
   <h1 class="fixed-header">Welcome To The Smart Gate Entry Management System</h1>
   <a href="../logout.php" class="btn">Logout</a>
   </div>
+  <div style="padding-top: 80px;">
+    <!-- Your student registration form -->
+</div>
+
 <div class="sidebar">
   <h4>UR CE Rukara</h4>
   <!-- <a href="#" onclick="loadContent('userAccount.php')">User Account</a> -->

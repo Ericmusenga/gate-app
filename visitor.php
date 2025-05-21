@@ -2,10 +2,10 @@
  <!DOCTYPE html>
 <html lang="en">
  <header>
-  <h1 class="fixed-header">Welcome To The Smart Gate Entry Management System</h1>
+  <!-- <div>
   <a href="../logout.php" class="btn">Logout</a>
-  </div>
-</div>
+  <h1 class="fixed-header">Welcome To The Smart Gate Entry Management System</h1>
+  </div> -->
 </header>
 <div class="card border-warning visitor-card">
   <div class="card-header bg-warning text-white text-center">
@@ -61,6 +61,17 @@
       <div class="form-group">
         <label for="visitor_id">Visitor ID</label>
         <input type="text" name="visitor_id" id="visitor_id" class="form-control" required>
+      </div>
+
+      <div class="form-group">
+        <label for="district">District</label><br>
+        <input type="text" name="district" id="district" class="form-control" required>
+      </div>
+
+
+      <div class="form-group">
+        <label for="sector">Sector</label> <br>
+        <input type="text" name="sector" id="sector" class="form-control" required>
       </div>
 
       <div class="form-group">
