@@ -28,7 +28,7 @@
   <a href="#" onclick="loadContent('register.html')">Register Student</a>
   <a href="#" onclick="loadContent('SecurityRegister.html')">Security Register</a>
   <a href="#" onclick="loadContent('visitor_report.php')">Visitor Report</a>
-  <a href="#" onclick="loadContent('../lend.php')">Security Register</a>
+  <!-- <a href="#" onclick="loadContent('../lend.php')">Security Register</a> -->
   <a href="#" onclick="loadContent('update.php')">Update Info</a>
   <a href="#" onclick="loadContent('report.php')">View Report</a>
 </div>
@@ -62,6 +62,26 @@
     window.scrollTo(0, 0);
   };
 </script>
+<script>
+function deleteVisitor(id) {
+    if (confirm("Are you sure you want to delete this visitor?")) {
+        fetch('delete_visitor.php?id=' + id)
+        .then(response => response.text())
+        .then(data => {
+            if (data.trim() === 'success') {
+                alert('Visitor deleted successfully.');
+                location.reload();
+            } else {
+                alert('Server error: ' + data);
+            }
+        })
+        .catch(error => {
+            alert("Network or script error: " + error);
+        });
+    }
+}
+</script>
+
 
 </body>
 </html>

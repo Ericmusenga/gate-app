@@ -13,12 +13,12 @@ if ($conn->connect_error) {
 // Export logic
 if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename=visitor_report.csv');
+    header('Content-Disposition: attachment; filename=vistor_report.csv');
 
     $output = fopen('php://output', 'w');
-    fputcsv($output, ['ID', 'Visitor Name', 'ID Number', 'Visit Reason', 'District', 'Sector', 'Visit Time']);
+    fputcsv($output, ['ID', 'Visitor Name', 'ID Number', 'Visit Reason', 'Sector', 'District', 'Visit Time']);
 
-    $sql = "SELECT `id`, `visitor_name`, `id_number`, `visit_reason`, `district`, `sector`, `visit_time` FROM `visitors`";
+    $sql = "SELECT `id`, `visitor_name`, `id_number`, `visit_reason`, `sector`, `district`, `visit_time` FROM `visitors`";
     $result = $conn->query($sql);
 
     if ($result && $result->num_rows > 0) {
@@ -33,8 +33,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     exit;
 }
 ?>
-
-    <style>
+ <style>
 
         h2 {
             text-align: center;
@@ -68,12 +67,13 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
         }
     </style>
 
+
 <!-- HTML Content for AJAX -->
 <div class="card border-info">
   <div class="card-header bg-info">Visitor Reports</div>
   <div class="card-body">
     <p>View gate entry/exit logs, timestamps, and visitor information.</p>
-    <a href="visitor_report.php?export=csv" class="btn2">Export as CSV</a>
+    <a href="vistor_report.php?export=csv" class="btn2">Export as CSV</a>
 
     <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
       <tr style="background-color: #3a80cb; color: white;">
@@ -81,12 +81,15 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
         <th>Visitor Name</th>
         <th>ID Number</th>
         <th>Visit Reason</th>
-        <th>District</th>
         <th>Sector</th>
+        <th>District</th>
+        <th>Equipment</th>
         <th>Visit Time</th>
+        <th>Actions</th> <!-- New column for buttons -->
+
       </tr>
       <?php
-      $sql = "SELECT `id`, `visitor_name`, `id_number`, `visit_reason`, `district`, `sector`, `visit_time` FROM `visitors`";
+      $sql = "SELECT `id`, `visitor_name`, `id_number`, `visit_reason`, `sector`, `district`, `equipment`, `visit_time` FROM `visitors`";
       $result = $conn->query($sql);
       if ($result && $result->num_rows > 0) {
           while ($row = $result->fetch_assoc()) {
@@ -95,9 +98,15 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
                       <td>{$row['visitor_name']}</td>
                       <td>{$row['id_number']}</td>
                       <td>{$row['visit_reason']}</td>
-                      <td>{$row['district']}</td>
                       <td>{$row['sector']}</td>
+                      <td>{$row['district']}</td>
+                      <td>{$row['equipment']}</td>
                       <td>{$row['visit_time']}</td>
+                    <td>
+                    <button class='btn3' onclick=\"deleteVisitor({$row['id']})\">Delete</button>
+                    <a href='edit_visitor.php?id={$row['id']}' class='btn3'>Edit</a>
+                    </td>
+
                     </tr>";
           }
       } else {
@@ -106,5 +115,22 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
       $conn->close();
       ?>
     </table>
+
+    <script>
+    function deleteVisitor(id) {
+    if (confirm("Are you sure you want to delete this visitor?")) {
+        fetch('delete_visitor.php?id=' + id)
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+            loadContent('admin_dashboard.php'); // Reload updated content
+        })
+        .catch(error => {
+            alert("Error deleting: " + error);
+        });
+    }
+    }
+    </script>
+
   </div>
 </div>

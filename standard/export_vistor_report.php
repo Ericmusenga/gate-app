@@ -83,12 +83,13 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
         <th>Visit Reason</th>
         <th>Sector</th>
         <th>District</th>
+        <th>Equipment</th>
         <th>Visit Time</th>
         <th>Actions</th> <!-- New column for buttons -->
 
       </tr>
       <?php
-      $sql = "SELECT `id`, `visitor_name`, `id_number`, `visit_reason`, `sector`, `district`, `visit_time` FROM `visitors`";
+      $sql = "SELECT `id`, `visitor_name`, `id_number`, `visit_reason`, `sector`, `district`, `equipment`, `visit_time` FROM `visitors`";
       $result = $conn->query($sql);
       if ($result && $result->num_rows > 0) {
           while ($row = $result->fetch_assoc()) {
@@ -99,11 +100,13 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
                       <td>{$row['visit_reason']}</td>
                       <td>{$row['sector']}</td>
                       <td>{$row['district']}</td>
+                      <td>{$row['equipment']}</td>
                       <td>{$row['visit_time']}</td>
-                      <td>
-                      <button class='btn2' onclick=\"loadContent('edit_visitor.php?id={$row['id']}')\">Edit</button>
-                      <button class='btn2' onclick=\"deleteVisitor({$row['id']})\">Delete</button>
-                      </td>
+                    <td>
+                    <button class='btn3' onclick=\"deleteVisitor({$row['id']})\">Delete</button>
+                    <a href='edit_visitor.php?id={$row['id']}' class='btn3'>Edit</a>
+                    </td>
+
                     </tr>";
           }
       } else {
@@ -112,5 +115,22 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
       $conn->close();
       ?>
     </table>
+
+    <script>
+    function deleteVisitor(id) {
+    if (confirm("Are you sure you want to delete this visitor?")) {
+        fetch('delete_visitor.php?id=' + id)
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+            loadContent('export_vistor_report.php'); // Reload updated content
+        })
+        .catch(error => {
+            alert("Error deleting: " + error);
+        });
+    }
+    }
+    </script>
+
   </div>
 </div>
