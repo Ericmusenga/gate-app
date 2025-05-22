@@ -1,4 +1,5 @@
 <?php
+// DB connection
 $host = 'localhost';
 $username = 'root';
 $password = '';
@@ -9,80 +10,164 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Update logic when form is submitted
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = $_POST['id'];
-    $visitor_name = $_POST['visitor_name'];
-    $id_number = $_POST['id_number'];
-    $visit_reason = $_POST['visit_reason'];
-    $sector = $_POST['sector'];
-    $district = $_POST['district'];
-    $equipment = $_POST['equipment'];
+// Get student ID from URL
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    die("Invalid request: student ID missing.");
+}
 
-    $sql = "UPDATE visitors SET 
-                visitor_name = ?, 
-                id_number = ?, 
-                visit_reason = ?, 
-                sector = ?, 
-                district = ?, 
-                equipment = ?
-            WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssssi", $visitor_name, $id_number, $visit_reason, $sector, $district, $equipment, $id);
-    
-    if ($stmt->execute()) {
-        echo "<script>alert('Visitor updated successfully.'); window.location.href = 'admin_dashboard.php';</script>";
+$studentId = intval($_GET['id']);
+
+// Handle update form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $reg = $_POST['reg_number'];
+    $name = $_POST['name'];
+    $department = $_POST['department'];
+    $program = $_POST['program'];
+    $class = $_POST['class'];
+    $laptop_serial = $_POST['laptop_serial'];
+    $laptop_status = $_POST['laptop_status'];
+    $card_id = $_POST['studentcard_id'];
+
+    // Optional: handle photo upload
+    if (!empty($_FILES['photo']['name'])) {
+        $photoName = basename($_FILES['photo']['name']);
+        $photoTmp = $_FILES['photo']['tmp_name'];
+        $targetDir = "uploads/";
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir);
+        }
+        $targetFile = $targetDir . $photoName;
+        move_uploaded_file($photoTmp, $targetFile);
+
+        $sql = "UPDATE students SET 
+            Registration_Number=?, Name=?, Department=?, Program=?, Class=?, 
+            Laptop_SerialNumber=?, laptop_status=?, studentcard_Id=?, photo=? 
+            WHERE id=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssssssssi", $reg, $name, $department, $program, $class, $laptop_serial, $laptop_status, $card_id, $photoName, $studentId);
     } else {
-        echo "Error updating record: " . $conn->error;
+        $sql = "UPDATE students SET 
+            Registration_Number=?, Name=?, Department=?, Program=?, Class=?, 
+            Laptop_SerialNumber=?, laptop_status=?, studentcard_Id=? 
+            WHERE id=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssssssssi", $reg, $name, $department, $program, $class, $laptop_serial, $laptop_status, $card_id, $studentId);
+    }
+
+    if ($stmt->execute()) {
+        echo "<script>alert('✅ Student updated successfully.'); window.location.href='admin_dashboard.php';</script>";
+        exit();
+    } else {
+        echo "❌ Failed to update: " . $stmt->error;
     }
 
     $stmt->close();
-    exit;
 }
 
-// Load existing visitor info
-if (isset($_GET['id'])) {
-    $id = intval($_GET['id']);
-    $result = $conn->query("SELECT * FROM visitors WHERE id = $id");
+// Fetch student data
+$query = "SELECT * FROM students WHERE id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $studentId);
+$stmt->execute();
+$result = $stmt->get_result();
+$student = $result->fetch_assoc();
 
-    if ($result->num_rows == 1) {
-        $visitor = $result->fetch_assoc();
-        // window.location.reload();
-        // exit();
-    } else {
-        echo "Visitor not found."; 
-        exit;
-    }
-} else {
-    echo "No visitor ID provided.";
-    exit;
+if (!$student) {
+    die("Student not found.");
 }
-$conn->close();
-
 ?>
 
-<!-- HTML Edit Form -->
-<h2>Edit Visitor Information</h2>
-<form method="post" action="edit_visitor.php">
-    <input type="hidden" name="id" value="<?php echo $visitor['id']; ?>">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Student</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+        }
+        form {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #ccc;
+        }
+        h2 {
+            text-align: center;
+            color: #3a80cb;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 20px;
+            background-color: #3a80cb;
+            color: white;
+            padding: 12px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: darkblue;
+        }
+        img {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
 
-    <label>Visitor Name:</label><br>
-    <input type="text" name="visitor_name" value="<?php echo $visitor['visitor_name']; ?>" required><br><br>
+<h2>Edit Student</h2>
 
-    <label>ID Number:</label><br>
-    <input type="text" name="id_number" value="<?php echo $visitor['id_number']; ?>" required><br><br>
+<form method="POST" enctype="multipart/form-data">
 
-    <label>Visit Reason:</label><br>
-    <input type="text" name="visit_reason" value="<?php echo $visitor['visit_reason']; ?>" required><br><br>
+    <label>Registration Number</label>
+    <input type="text" name="reg_number" value="<?= htmlspecialchars($student['Registration_Number']) ?>" required>
 
-    <label>Sector:</label><br>
-    <input type="text" name="sector" value="<?php echo $visitor['sector']; ?>" required><br><br>
+    <label>Name</label>
+    <input type="text" name="name" value="<?= htmlspecialchars($student['Name']) ?>" required>
 
-    <label>District:</label><br>
-    <input type="text" name="district" value="<?php echo $visitor['district']; ?>" required><br><br>
+    <label>Department</label>
+    <input type="text" name="department" value="<?= htmlspecialchars($student['Department']) ?>" required>
 
-    <label>Equipment:</label><br>
-    <input type="text" name="equipment" value="<?php echo $visitor['equipment']; ?>"><br><br>
+    <label>Program</label>
+    <input type="text" name="program" value="<?= htmlspecialchars($student['Program']) ?>" required>
 
-    <input type="submit" value="Update Visitor">
+    <label>Class</label>
+    <input type="text" name="class" value="<?= htmlspecialchars($student['Class']) ?>" required>
+
+    <label>Laptop Serial Number</label>
+    <input type="text" name="laptop_serial" value="<?= htmlspecialchars($student['Laptop_SerialNumber']) ?>">
+
+    <label>Laptop Status</label>
+    <select name="laptop_status">
+        <option value="Yes" <?= $student['laptop_status'] === 'Yes' ? 'selected' : '' ?>>Yes</option>
+        <option value="No" <?= $student['laptop_status'] === 'No' ? 'selected' : '' ?>>No</option>
+    </select>
+
+    <label>Student Card ID</label>
+    <input type="text" name="studentcard_id" value="<?= htmlspecialchars($student['studentcard_Id']) ?>" required>
+
+    <label>Photo (optional)</label>
+    <input type="file" name="photo">
+    <?php if (!empty($student['photo'])): ?>
+        <p>Current: <img src="uploads/<?= $student['photo'] ?>" width="100" /></p>
+    <?php endif; ?>
+
+    <button type="submit">Update Student</button>
 </form>
+
+</body>
+</html>
