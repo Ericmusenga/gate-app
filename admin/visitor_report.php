@@ -74,7 +74,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
 <div class="card border-info">
   <div class="card-header bg-info">Visitor Reports</div>
   <div class="card-body">
-    <p>View gate entry/exit logs, timestamps, and visitor information.</p>
+    <p>View visitor information Entry Via Gate.</p>
     <a href="visitor_report.php?export=csv" class="btn2">Export as CSV</a>
 
     <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">

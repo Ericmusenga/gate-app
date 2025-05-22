@@ -20,8 +20,8 @@ if (isset($_GET['id'])) {
 
     $stmt->close();
     $conn->close();
-} else {
-    echo "welcome to visitor info";
+// } else {
+//     echo "welcome to visitor info";
 }
 ?>
 
@@ -92,7 +92,7 @@ tr:nth-child(even) {
 <div class="card border-info">
   <div class="card-header bg-info">Visitor Reports</div>
   <div class="card-body">
-    <p>View gate entry/exit logs, timestamps, and visitor information.</p>
+    <p>View visitor information Entry Via Gate.</p>
     <a href="export_vistor_report.php?export=csv" class="btn2">Export as CSV</a>
 
     <table>
