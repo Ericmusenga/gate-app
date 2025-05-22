@@ -16,9 +16,11 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     header('Content-Disposition: attachment; filename=vistor_report.csv');
 
     $output = fopen('php://output', 'w');
-    fputcsv($output, ['ID', 'Visitor Name', 'ID Number', 'Visit Reason', 'Sector', 'District', 'Visit Time']);
+    fputcsv($output, ['ID', 'Visitor Name', 'ID Number', 'Visit Reason', 'District', 'Sector', 'Equipment', 'Visit Time']);
+    // fputcsv($output, ['ID', 'Visitor Name', 'ID Number', 'Visit Reason', 'Sector', 'District', 'Visit Time']);
 
-    $sql = "SELECT `id`, `visitor_name`, `id_number`, `visit_reason`, `sector`, `district`, `visit_time` FROM `visitors`";
+    $sql = "SELECT id, visitor_name, id_number, visit_reason, district, sector, equipment, visit_time FROM visitors";
+    // $sql = "SELECT `id`, `visitor_name`, `id_number`, `visit_reason`, `sector`, `district`, `visit_time` FROM `visitors`";
     $result = $conn->query($sql);
 
     if ($result && $result->num_rows > 0) {
@@ -73,7 +75,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
   <div class="card-header bg-info">Visitor Reports</div>
   <div class="card-body">
     <p>View gate entry/exit logs, timestamps, and visitor information.</p>
-    <a href="vistor_report.php?export=csv" class="btn2">Export as CSV</a>
+    <a href="visitor_report.php?export=csv" class="btn2">Export as CSV</a>
 
     <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
       <tr style="background-color: #3a80cb; color: white;">
@@ -123,7 +125,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
         .then(response => response.text())
         .then(data => {
             alert(data);
-            loadContent('admin_dashboard.php'); // Reload updated content
+            location.reload(); // Refresh to reflect deletion
         })
         .catch(error => {
             alert("Error deleting: " + error);
