@@ -5,7 +5,7 @@ include '../db.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Trim inputs and check for emptiness
     $name = trim($_POST['name'] ?? '');
-    $security_id = trim($_POST['id'] ?? '');
+    $security_id = trim($_POST['security_id'] ?? '');
     $username = trim($_POST['username'] ?? '');
     $password = trim($_POST['password'] ?? '');
 
