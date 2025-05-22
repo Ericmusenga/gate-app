@@ -1,10 +1,20 @@
 <?php
 session_start();
-include '../db.php'; // Include your DB connection
+include '../db.php';
 
-$regNumber = $_SESSION['Registration_Number']; // Assuming user session holds reg_number
-$currentPassword = $_POST['currentPassword'];
-$newPassword = $_POST['newPassword'];
+if (!isset($_SESSION['Registration_Number'])) {
+    echo "❌ Session expired. Please log in again.";
+    exit();
+}
+
+$regNumber = $_SESSION['Registration_Number'];
+$currentPassword = $_POST['currentPassword'] ?? '';
+$newPassword = $_POST['newPassword'] ?? '';
+
+if (empty($currentPassword) || empty($newPassword)) {
+    echo "❌ All fields are required.";
+    exit();
+}
 
 // Validate current password
 $query = "SELECT password FROM students WHERE Registration_Number = ?";
@@ -16,7 +26,7 @@ $stmt->fetch();
 $stmt->close();
 
 if ($currentPassword !== $dbPassword) {
-    echo "Current password is incorrect!";
+    echo "❌ Current password is incorrect!";
     exit();
 }
 
@@ -26,9 +36,9 @@ $stmt = $conn->prepare($update);
 $stmt->bind_param("ss", $newPassword, $regNumber);
 
 if ($stmt->execute()) {
-    echo "Password changed successfully.";
+    echo "✅ Password updated successfully.";
 } else {
-    echo "Failed to change password.";
+    echo "❌ Failed to update password.";
 }
 $stmt->close();
 $conn->close();

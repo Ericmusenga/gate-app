@@ -1,12 +1,12 @@
 <?php
 include '../db.php';
-// session_start();
+session_start();
 
-// Use session to protect the dashboard and fetch student info
-// if (!isset($_SESSION['Registration_Number'])) {
-//     header("Location: ../index.html");
-//     exit();
-// }
+//Use session to protect the dashboard and fetch student info
+if (!isset($_SESSION['Registration_Number'])) {
+    header("Location: ../index.html");
+    exit();
+}
 
 $regNo = $_GET['reg'] ?? '';
 
@@ -21,6 +21,8 @@ if ($regNo) {
     $stmt->close();
     $conn->close();
 }
+// <input type="hidden" name="borrower" value="<?php echo $_SESSION['Registration_Number']; 
+// ?>">
 
 ?>
 
@@ -38,9 +40,28 @@ if ($regNo) {
     }
     .nav-link.active {
       background-color: #a8bdffdb;
-      color: #4d8a9c !important;
+      /* color:rgb(155, 173, 178) !important; */
     }
-  </style>
+
+  .header {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+  .info {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  .details {
+    flex: 1;
+  }
+  .photo img {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+  }
+</style>
+
 </head>
 <body>
   <div class="container-fluid">
@@ -61,9 +82,6 @@ if ($regNo) {
           </li>
           <li class="nav-item">
             <a class="nav-link" data-bs-toggle="pill" href="#returnLaptop">Return Laptop</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="pill" href="#securityRegister">Security Register</a>
           </li>
           <li class="nav-item mt-4">
             <a class="btn btn-danger w-100" href="../logout.php">Logout</a>
@@ -122,76 +140,58 @@ if ($regNo) {
             </div>
           </div>
 
-          <!-- Lend Laptop -->
-          <div class="tab-pane fade" id="lendLaptop">
-            <div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
-              <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
-                <h4 class="mb-4 text-center">Lend a Laptop</h4>
-                <form action="lend_laptop.php" method="POST">
-                  <div class="mb-3">
-                    <label for="text" class="form-label">Registration Number</label>
-                    <input type="text" name="Registration_Number" class="form-control" required>
-                  </div>
-                  <div class="mb-3">
-                    <label for="text" class="form-label">Laptop SerialNumber</label>
-                    <input type="text" name="Laptop_SerialNumber" class="form-control" required>
-                  </div>
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Lend Laptop</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
+          <!-- Lend Laptop --><div class="tab-pane fade" id="lendLaptop">
+  <div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+    <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
+      <h4 class="mb-4 text-center">Approve Laptop Lending</h4>
+      <form action="lend_laptop.php" method="POST">
+        <!-- Hidden input for original owner (from session) -->
+        <input type="hidden" name="original_owner" value="<?php echo htmlspecialchars($_SESSION['Registration_Number']); ?>">
+
+        <div class="mb-3">
+          <label for="borrower" class="form-label">Borrower's Registration Number</label>
+          <input type="text" name="borrower" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="laptop_serial" class="form-label">Laptop Serial Number</label>
+          <input type="text" name="laptop_serial" class="form-control" required>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Approve Lending</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
           <!-- Return Laptop -->
           <div class="tab-pane fade" id="returnLaptop">
-            <div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
-              <div class="card p-4 shadow" style="width: 100%; max-width: 500px;">
-                <h4 class="text-center mb-3">Return Laptop</h4>
-                <form action="return_laptop.php" method="POST">
-                  <div class="mb-3">
-                    <label for="Registration_Number" class="form-label">Registration Number</label>
-                    <input type="text" name="Registration_Number" class="form-control" value="<?php echo htmlspecialchars($student['Registration_Number']); ?>" readonly>
-                  </div>
-                  <div class="mb-3">
-                    <label for="Laptop_SerialNumber" class="form-label">Laptop Serial Number</label>
-                    <input type="text" name="Laptop_SerialNumber" class="form-control" required>
-                  </div>
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-warning">Request Return</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-
-          <!-- Security Register -->
-          <div class="tab-pane fade" id="securityRegister">
-            <div class="card border-dark">
-              <div class="card-header bg-dark text-white">Security Register</div>
-              <div class="card-body">
-                <form action="lend_process.php" method="post">
-                  <div class="mb-3">
-                    <label for="lender_id" class="form-label">Lender ID</label>
-                    <input type="text" name="lender_id" class="form-control" required>
-                  </div>
-                  <div class="mb-3">
-                    <label for="borrower_id" class="form-label">Borrower ID</label>
-                    <input type="text" name="borrower_id" class="form-control" required>
-                  </div>
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-success">Lend</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-
+  <div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="card p-4 shadow" style="width: 100%; max-width: 500px;">
+      <h4 class="text-center mb-3">Request to Return Laptop</h4>
+      <form action="return_laptop.php" method="POST">
+        <!-- Borrower Registration Number (readonly from session/profile) -->
+        <div class="mb-3">
+          <label for="Registration_Number" class="form-label">Your Registration Number</label>
+          <input type="text" name="borrower" class="form-control" value="<?php echo htmlspecialchars($student['Registration_Number']); ?>" readonly>
         </div>
-      </div>
+
+        <!-- Laptop Serial Number -->
+        <div class="mb-3">
+          <label for="Laptop_SerialNumber" class="form-label">Laptop Serial Number</label>
+          <input type="text" name="laptop_serial" class="form-control" required>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+          <button type="submit" class="btn btn-warning">Request Return</button>
+        </div>
+      </form>
     </div>
   </div>
+</div>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

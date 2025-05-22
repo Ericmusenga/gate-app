@@ -1,19 +1,27 @@
 <?php
 include '../db.php';
+session_start();
 
-$regNumber = $_POST['Registration_Number'];
-$serialNumber = $_POST['Laptop_SerialNumber'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $borrower = $_POST['borrower'] ?? '';
+    $laptop_serial = $_POST['laptop_serial'] ?? '';
 
-// Mark the return request
-$query = "UPDATE students SET laptop_status = 'RETURN_REQUESTED', return_approved = 'NO' WHERE Registration_Number = ? AND Laptop_SerialNumber = ?";
-$stmt = $conn->prepare($query);
-$stmt->bind_param("ss", $regNumber, $serialNumber);
+    if ($borrower && $laptop_serial) {
+        // Update lending status to 'returned_pending'
+        $stmt = $conn->prepare("UPDATE laptop_lending SET status = 'returned_pending' WHERE borrower = ? AND laptop_serial = ? AND status = 'approved'");
+        $stmt->bind_param("ss", $borrower, $laptop_serial);
 
-if ($stmt->execute()) {
-    echo "Return request submitted. Awaiting approval.";
+        if ($stmt->execute() && $stmt->affected_rows > 0) {
+            echo "<script>alert('Return request submitted successfully!'); window.location.href = 'student_dashboard.php?reg=" . urlencode($borrower) . "';</script>";
+        } else {
+            echo "<script>alert('No approved lending record found or already returned.'); window.history.back();</script>";
+        }
+
+        $stmt->close();
+    } else {
+        echo "Missing required fields.";
+    }
 } else {
-    echo "Failed to submit return request.";
+    echo "Invalid request.";
 }
-$stmt->close();
-$conn->close();
 ?>

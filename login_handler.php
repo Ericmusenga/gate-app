@@ -1,5 +1,6 @@
 <?php
 include 'db.php';
+session_start();
 
 $role = $_POST['role'] ?? '';
 $username = $_POST['username'] ?? '';
@@ -25,7 +26,9 @@ if ($role && $username && $password) {
         if ($role === 'admin') {
             header("Location: admin/admin_dashboard.php");
         } elseif ($role === 'student') {
+            $_SESSION['Registration_Number'] = $username;
             header("Location: student/student_dashboard.php?reg=$username");
+            exit();
         } elseif ($role === 'security') {
             header("Location: standard/standard_dashboard.php");
         }
