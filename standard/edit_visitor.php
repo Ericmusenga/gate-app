@@ -47,8 +47,6 @@ if (isset($_GET['id'])) {
 
     if ($result->num_rows == 1) {
         $visitor = $result->fetch_assoc();
-        window.location.reload();
-        exit();
     } else {
         echo "Visitor not found."; 
         exit;
@@ -58,8 +56,7 @@ if (isset($_GET['id'])) {
     exit;
 }
 $conn->close();
-        window.location.reload();
-        exit();
+
 ?>
 
 <!-- HTML Edit Form -->
