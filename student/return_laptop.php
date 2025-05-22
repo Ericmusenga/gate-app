@@ -1,8 +1,8 @@
 <?php
-include 'db_connection.php';
+include '../db.php';
 
-$regNumber = $_POST['regNumberReturn'];
-$serialNumber = $_POST['serialNumberReturn'];
+$regNumber = $_POST['Registration_Number'];
+$serialNumber = $_POST['Laptop_SerialNumber'];
 
 // Mark the return request
 $query = "UPDATE students SET laptop_status = 'RETURN_REQUESTED', return_approved = 'NO' WHERE Registration_Number = ? AND Laptop_SerialNumber = ?";

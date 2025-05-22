@@ -155,8 +155,8 @@ if ($regNo) {
                     <input type="text" name="Registration_Number" class="form-control" value="<?php echo htmlspecialchars($student['Registration_Number']); ?>" readonly>
                   </div>
                   <div class="mb-3">
-                    <label for="serialNumberReturn" class="form-label">Laptop Serial Number</label>
-                    <input type="text" name="serialNumberReturn" class="form-control" required>
+                    <label for="Laptop_SerialNumber" class="form-label">Laptop Serial Number</label>
+                    <input type="text" name="Laptop_SerialNumber" class="form-control" required>
                   </div>
                   <div class="text-center">
                     <button type="submit" class="btn btn-warning">Request Return</button>
