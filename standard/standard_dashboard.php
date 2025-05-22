@@ -64,6 +64,21 @@
 }
 
 </script>
+    <script>
+    function deleteVisitor(id) {
+        if (confirm("Are you sure you want to delete this visitor?")) {
+            fetch('delete_visitor.php?id=' + id)
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                location.reload();
+            })
+            .catch(error => {
+                alert("Error deleting: " + error);
+            });
+        }
+    }
+    </script>
 
 
 </body>
