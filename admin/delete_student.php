@@ -10,20 +10,61 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-if (isset($_GET['id'])) {
+// Validate and sanitize the ID
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $id = intval($_GET['id']);
-    $sql = "DELETE FROM students WHERE id = $id";
 
-    if ($conn->query($sql) === TRUE) {
-        echo "success"; // This must match JS check
-    } else {
-        http_response_code(500);
-        echo "SQL Error: " . $conn->error;
+    // First, check if the student exists and get their photo
+    $check = $conn->prepare("SELECT photo FROM students WHERE id = ?");
+    $check->bind_param("i", $id);
+    $check->execute();
+    $result = $check->get_result();
+
+    if ($result->num_rows === 0) {
+        echo "❌ Student not found.";
+        exit;
     }
+
+    $student = $result->fetch_assoc();
+
+    // Delete student
+    $stmt = $conn->prepare("DELETE FROM students WHERE id = ?");
+    $stmt->bind_param("i", $id);
+
+    if ($stmt->execute()) {
+        // Optionally delete the photo
+        if (!empty($student['photo'])) {
+            $photoPath = "uploads/" . $student['photo'];
+            if (file_exists($photoPath)) {
+                unlink($photoPath);
+            }
+        }
+
+        echo "✅ Student deleted successfully.";
+    } else {
+        echo "❌ Failed to delete student.";
+    }
+
+    $stmt->close();
 } else {
-    http_response_code(400);
-    echo "Invalid request.";
+    echo "❌ Invalid student ID.";
 }
 
 $conn->close();
 ?>
+
+<script>
+function deleteStudent(id) {
+    if (confirm("Are you sure you want to delete this student?")) {
+        fetch('delete_student.php?id=' + id)
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+            location.reload(); // Refresh to reflect deletion
+        })
+        .catch(error => {
+            alert("Error deleting: " + error);
+        });
+    }
+}
+</script>

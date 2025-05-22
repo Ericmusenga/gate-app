@@ -63,23 +63,37 @@
   };
 </script>
 <script>
-function deleteVisitor(id) {
-    if (confirm("Are you sure you want to delete this student?")) {
-        fetch('delete_student.php?id=' + id)
-        .then(response => response.text())
-        .then(data => {
-            if (data.trim() === 'success') {
-                alert('student deleted successfully.');
-                location.reload();
-            } else {
-                alert('Server error: ' + data);
-            }
-        })
-        .catch(error => {
-            alert("Network or script error: " + error);
-        });
-    }
-}
+  function deleteVisitor(id) {
+      if (confirm("Are you sure you want to delete this students?")) {
+          fetch('delete_visitor.php?id=' + id)
+          .then(response => response.text())
+          .then(data => {
+              if (data.trim() === 'success') {
+                  alert('vistor deleted successfully.');
+                  location.reload();
+              } else {
+                  alert('Server error: ' + data);
+              }
+          })
+          .catch(error => {
+              alert("Network or script error: " + error);
+          });
+      }
+  }
+  function deleteStudent(id) {
+      if (confirm("Are you sure you want to delete this student?")) {
+          fetch('delete_student.php?id=' + id)
+          .then(response => response.text())
+          .then(data => {
+              alert(data);
+              location.reload(); // Refresh after deletion
+          })
+          .catch(error => {
+              alert("Error deleting: " + error);
+          });
+      }
+  }
+
 </script>
 
 
