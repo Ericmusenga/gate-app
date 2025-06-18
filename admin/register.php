@@ -2,7 +2,7 @@
 include '../db.php';
 
 if (
-    empty($_POST['reg_number']) || empty($_POST['name']) ||
+    empty($_POST['reg_number']) || empty($_POST['name']) || empty($_POST['email']) ||
     empty($_POST['department']) || empty($_POST['program']) ||
     empty($_POST['class']) || empty($_POST['studentcard_id']) ||
     empty($_FILES['photo']['name'])
@@ -14,6 +14,7 @@ if (
 // Collect data
 $regNumber = $_POST['reg_number'];
 $name = $_POST['name'];
+$email = $_POST['email'];
 $department = $_POST['department'];
 $program = $_POST['program'];
 $class = $_POST['class'];
@@ -33,10 +34,10 @@ move_uploaded_file($photoTmp, $targetFile);
 
 // Insert into DB
 $query = "INSERT INTO students 
-(Registration_Number, password, Name, Department, Program, Class, Laptop_SerialNumber, studentcard_Id, photo, created_at)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+(Registration_Number, password, Name, email, Department, Program, Class, Laptop_SerialNumber, studentcard_Id, photo, created_at)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("ssssssssss", $regNumber, $regNumber, $name, $department, $program, $class, $laptopSerial, $studentCardId, $photoName, $createdAt);
+$stmt->bind_param("sssssssssss", $regNumber, $regNumber, $name, $email, $department, $program, $class, $laptopSerial, $studentCardId, $photoName, $createdAt);
 
 if ($stmt->execute()) {
     echo "✅ Student registered successfully.";

@@ -4,7 +4,7 @@ session_start();
 
 //Use session to protect the dashboard and fetch student info
 if (!isset($_SESSION['Registration_Number'])) {
-    header("Location: ../index.html");
+    header("Location: ../index.php");
     exit();
 }
 
@@ -64,6 +64,11 @@ if ($regNo) {
 
 </head>
 <body>
+  <?php if(isset($_GET['success'])): ?>
+    <div style="background: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px; padding: 12px; text-align: center; margin-bottom: 18px; font-weight: bold;">
+      <?php echo htmlspecialchars($_GET['success']); ?>
+    </div>
+  <?php endif; ?>
   <div class="container-fluid">
     <div class="row">
 

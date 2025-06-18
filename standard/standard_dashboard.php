@@ -14,6 +14,11 @@
   <link href="../css/style.css" rel="stylesheet">
 </head>
 <body>
+  <?php if(isset($_GET['success'])): ?>
+    <div style="background: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px; padding: 12px; text-align: center; margin-bottom: 18px; font-weight: bold;">
+      <?php echo htmlspecialchars($_GET['success']); ?>
+    </div>
+  <?php endif; ?>
   <a href="../logout.php" class="btn">Logout</a>
   <h1 class="fixed-header">Welcome To The Smart Gate Entry Management System </h1>
 

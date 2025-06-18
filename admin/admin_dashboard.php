@@ -15,6 +15,11 @@
 </head>
 <body>
   <div class="head">
+  <?php if(isset($_GET['success'])): ?>
+    <div style="background: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px; padding: 12px; text-align: center; margin-bottom: 18px; font-weight: bold;">
+      <?php echo htmlspecialchars($_GET['success']); ?>
+    </div>
+  <?php endif; ?>
   <h1 class="fixed-header">Welcome To The Smart Gate Entry Management System</h1>
   <a href="../logout.php" class="btn">Logout</a>
   </div>
@@ -24,7 +29,7 @@
 
 <div class="sidebar">
   <h4>UR CE Rukara</h4>
-  <!-- <a href="#" onclick="loadContent('userAccount.php')">User Account</a> -->
+  <a href="#" onclick="loadContent('user_management.php')">Manage Users</a>
   <a href="#" onclick="loadContent('register.html')">Register Student</a>
   <a href="#" onclick="loadContent('SecurityRegister.html')">Security Register</a>
   <a href="#" onclick="loadContent('visitor_report.php')">Visitor Report</a>

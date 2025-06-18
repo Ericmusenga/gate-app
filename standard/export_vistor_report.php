@@ -78,7 +78,7 @@ th, td {
     text-align: left;
 }
 th {
-    background: #3a80cb;
+    background:rgb(65, 68, 71);
     color: white;
 }
 tr:nth-child(even) {
